@@ -24,7 +24,7 @@ tokens = (
     "NUMERO_DECIMAL_CON_ERROR2",
     "PUNTO_Y_COMA",
     "COMENTARIOS",
-
+    "PALABRA_RESERVADA_MAIN",
     
 )
 
@@ -68,6 +68,10 @@ def t_PALABRA_RESERVADA_RETURN(t):
     r'return'
     return t
 
+def t_PALABRA_RESERVADA_MAIN(t):
+    r'main'
+    return t
+
 def t_BUCLE_FOR(t):
     r'for'
     return t
@@ -75,6 +79,7 @@ def t_BUCLE_FOR(t):
 def t_BUCLE_WHILE(t):
     r'while'
     return t
+
 def t_COMENTARIOS(t):
     r'\/\/[^\n]*'
     return t
@@ -188,6 +193,8 @@ while True:
         print("PUNTO_Y_COMA:", token.value)
     if token.type == "COMENTARIOS":
         print("COMENTARIO:", token.value)
+    if token.type == "PALABRA_RESERVADA_MAIN":
+        print("PALABRA_RESERVADA_MAIN:", token.value)
     
     
     
