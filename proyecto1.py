@@ -22,6 +22,9 @@ tokens = (
     "OPERADOR_MODULO",
     "NUMERO_DECIMAL_CON_ERROR",
     "NUMERO_DECIMAL_CON_ERROR2",
+    "PUNTO_Y_COMA",
+    "COMENTARIOS",
+
     
 )
 
@@ -38,9 +41,10 @@ t_OPERADOR_RESTA = r'\-'
 
 t_OPERADOR_MULTIPLICAR = r'\*'
 
-t_OPERADOR_DIVIDIR = r'/'
 
 t_OPERADOR_MODULO = r'\%'
+
+t_PUNTO_Y_COMA = r';'
 
 
 def t_TIPO_ENTERO(t):
@@ -71,6 +75,14 @@ def t_BUCLE_FOR(t):
 def t_BUCLE_WHILE(t):
     r'while'
     return t
+def t_COMENTARIOS(t):
+    r'\/\/[^\n]*'
+    return t
+
+def t_OPERADOR_DIVIDIR(t):
+    r'/'
+    return t
+
 
 #funcion variable mal escrita melba
 
@@ -172,6 +184,11 @@ while True:
         print("DECIMAL_MAL_ESCRITO:", token.value)
     if token.type == "NUMERO_DECIMAL_CON_ERROR2":
         print("DECIMAL_MAL_ESCRITO:", token.value)
+    if token.type == "PUNTO_Y_COMA":
+        print("PUNTO_Y_COMA:", token.value)
+    if token.type == "COMENTARIOS":
+        print("COMENTARIO:", token.value)
+    
     
     
     
