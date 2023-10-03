@@ -25,6 +25,9 @@ tokens = (
     "PUNTO_Y_COMA",
     "COMENTARIOS",
     "PALABRA_RESERVADA_MAIN",
+    "VARIABLE_ERROR",
+    "CORCHETE_IZQUIERDO",
+    "CORCHETE_DERECHO",
     
 )
 
@@ -41,11 +44,17 @@ t_OPERADOR_RESTA = r'\-'
 
 t_OPERADOR_MULTIPLICAR = r'\*'
 
-
 t_OPERADOR_MODULO = r'\%'
 
 t_PUNTO_Y_COMA = r';'
 
+t_CORCHETE_IZQUIERDO = r'\['
+
+t_CORCHETE_DERECHO = r'\]'
+
+def t_VARIABLE_ERROR(t):
+    r'\b\d+\w*\b|\b[a-zA-Z_][a-zA-Z0-9_]*\b(?!\s*\()' #expresion para variable mal escrita
+    return t
 
 def t_TIPO_ENTERO(t):
     r'int'
@@ -88,8 +97,6 @@ def t_OPERADOR_DIVIDIR(t):
     r'/'
     return t
 
-
-#funcion variable mal escrita melba
 
 def t_VARIABLE(t):#variable bien escrita
     r'[a-zA-Z][a-zA-Z0-9_]*'
@@ -195,6 +202,13 @@ while True:
         print("COMENTARIO:", token.value)
     if token.type == "PALABRA_RESERVADA_MAIN":
         print("PALABRA_RESERVADA_MAIN:", token.value)
+    if token.type == "VARIABLE_ERROR":
+        print("VARIABLE_MAL_ESCRITA:", token.value)
+    if token.type == "CORCHETE_IZQUIERDO":
+        print("CORCHETE_IZQUIERDO:", token.value)
+    if token.type == "CORCHETE_DERECHO":
+        print("CORCHETE_DERECHO:", token.value)
+    
     
     
     
