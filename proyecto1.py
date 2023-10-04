@@ -42,12 +42,15 @@ tokens = (
     "VARIABLE_ERROR",
     "CORCHETE_IZQUIERDO",
     "CORCHETE_DERECHO",
-    "COMA"
+    "COMA",
+    "CARACTER",
+    "CARACTER_ERROR",
+    "CADENA"
     
 )
 
 # Definición de las reglas para los tokens
-
+lista_de_tokens = []
 
 t_PARENTESIS_IZQUIERDO = r'\(' 
 
@@ -112,6 +115,18 @@ def t_OPERADOR_DIVIDIR(t):
     r'/'
     return t
 
+def t_CARACTER_ERROR(t):#encontrar caracteres con error como 'hola'
+    r'\'[a-zA-Z0-9][a-zA-Z0-9]+\''
+    return t
+
+def t_CADENA(t):
+    r'\"[a-zA-Z0-9_][a-zA-Z0-9_]*\"'
+    return t
+
+def t_CARACTER(t): #econtrar caracter valido como 'a'
+    r'\'[a-zA-Z]\''
+    return t
+
 def t_VARIABLE_ERROR(t):
     r'\d+[a-zA-Z_][a-zA-Z_0-9]*'
     if t.value[0].isdigit():
@@ -158,7 +173,8 @@ t_ignore = ' \t'
 
 # Manejo de errores
 def t_error(t):
-    print(f"{contado_de_lineas} Carácter ilegal:", t.value[0])
+    print(f"{contado_de_lineas} Caracter ilegal:", t.value[0])
+    lista_de_tokens.append(f"{contado_de_lineas} Caracter ilegal: {t.value[0]}")
     t.lexer.skip(1)
 
 # Crear un lexer
@@ -174,7 +190,7 @@ lexer.input(contenido)
 #variable para contar las lineas
 global contado_de_lineas
 contado_de_lineas = 1
-lista_de_tokens = []
+
 # Obtener tokens
 while True:
     token = lexer.token()
@@ -288,7 +304,18 @@ while True:
         print(f"{contado_de_lineas} encontre el token COMA: ", token.value)
         lista_de_tokens.append(f"{contado_de_lineas} encontre el token COMA: {token.value} ")
     
-    
+    if token.type == "CARACTER":
+            print(f"{contado_de_lineas} encontre el token CARACTER: {token.value}")
+            lista_de_tokens.append(f"{contado_de_lineas} encontre el token CARACTER: {token.value}")
+
+    if token.type == "CARACTER_ERROR":
+            print(f"{contado_de_lineas} encontre el token CARACTER_ERROR: {token.value}")
+            lista_de_tokens.append(f"{contado_de_lineas} encontre el token CARACTER_ERROR: {token.value}")
+
+    if token.type == "CADENA":
+            print(f"{contado_de_lineas} encontre el token CADENA: {token.value}")
+            lista_de_tokens.append(f"{contado_de_lineas} encontre el token CADENA: {token.value}")
+
 escribir_archivo(lista_de_tokens)
     
 #nota las lineas en blanco de los archivos no los cuenta
