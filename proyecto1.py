@@ -16,12 +16,46 @@ def escribir_archivo(lista):
 #el orden en el que se escriben las funciones de las reglas si importa!!!!!!!
 # Lista de nombres de tokens
 tokens = (
+    'ENTERO_SOBREPASADO',
     "TIPO_ENTERO",
     "TIPO_DECIMAL",
     "TIPO_CARACTER",
     "NUMERO_ENTERO",
     "LINEAS",
     "NUMERO_DECIMAL",
+    'PALABRA_RESERVADA_STATIC',
+    'PALABRA_RESERVADA_BOOL',
+    'PALABRA_RESERVADA_IF',
+    'PALABRA_RESERVADA_THEN',
+    'PALABRA_RESERVADA_ELSE',
+    'PALABRA_RESERVADA_DO',
+    'PALABRA_RESERVADA_TO',
+    'PALABRA_RESERVADA_BY',
+    'PALABRA_RESERVADA_OR',
+    'PALABRA_RESERVADA_AND',
+    'PALABRA_RESERVADA_NOT',
+    'PALABRA_RESERVADA_TRUE',
+    'PALABRA_RESERVADA_FALSE',
+    'PALABRA_RESERVADA_NULL',
+    'SUMA_RESULTADO',
+    'RESTA_RESULTADO',
+    'MULTI_RESULTADO',
+    'DIVI_RESULTADO',
+    'INCREMENTO',
+    'DECREMENTO',
+    'OP_TERNARIO',
+    'ASIGNACION',
+    'COLON',
+    'MENOR',
+    'MENOR_IGUAL',
+    'MAYOR',
+    'MAYOR_IGUAL',
+    'IGUAL',
+    'DISTINTO',
+    'PUNTOS_MAYOR_PUNTOS',
+    'PUNTOS_MENOR_PUNTOS',
+    'LLAVE_IZQ',
+    'LLAVE_DER',
     "VARIABLE",
     "BUCLE_FOR",
     "BUCLE_WHILE",
@@ -45,8 +79,8 @@ tokens = (
     "COMA",
     "CARACTER",
     "CARACTER_ERROR",
-    "CADENA"
-    
+    "CADENA",
+    'COMENTARIO_BLOQUE',   
 )
 
 # Definición de las reglas para los tokens
@@ -70,9 +104,146 @@ t_CORCHETE_IZQUIERDO = r'\['
 
 t_CORCHETE_DERECHO = r'\]'
 
+t_LLAVE_IZQ = r'\{'
+
+t_LLAVE_DER = r'\}'
+
 t_COMA = r'\,'
 
+def t_COMENTARIO_BLOQUE(t):
+    r'/\*(.|\n)*?\*/'
+    return t #Aquí debería haber un pass para que simplemente ignore los comentarios de bloque.
 
+# Palabras reservadas
+def t_PALABRA_RESERVADA_STATIC(t):
+    r'static'
+    return t
+
+def t_PALABRA_RESERVADA_BOOL(t):
+    r'bool'
+    return t
+
+def t_PALABRA_RESERVADA_IF(t):
+    r'if'
+    return t
+
+def t_PALABRA_RESERVADA_THEN(t):
+    r'then'
+    return t
+
+def t_PALABRA_RESERVADA_ELSE(t):
+    r'else'
+    return t
+
+def t_PALABRA_RESERVADA_DO(t):
+    r'do'
+    return t
+
+def t_PALABRA_RESERVADA_TO(t):
+    r'to'
+    return t
+
+def t_PALABRA_RESERVADA_BY(t):
+    r'by'
+    return t
+
+def t_PALABRA_RESERVADA_OR(t):
+    r'or'
+    return t
+
+def t_PALABRA_RESERVADA_AND(t):
+    r'and'
+    return t
+
+def t_PALABRA_RESERVADA_NOT(t):
+    r'not'
+    return t
+
+def t_PALABRA_RESERVADA_TRUE(t):
+    r'true'
+    return t
+
+def t_PALABRA_RESERVADA_FALSE(t):
+    r'false'
+    return t
+
+def t_PALABRA_RESERVADA_NULL(t):
+    r'null'
+    return t
+
+# Alteraciones al resultado.
+
+def t_SUMA_RESULTADO(t):
+    r'\+='
+    return t
+
+def t_RESTA_RESULTADO(t):
+    r'-='
+    return t
+
+def t_MULTI_RESULTADO(t):
+    r'\*='
+    return t
+
+def t_DIVI_RESULTADO(t):
+    r'/='
+    return t
+
+def t_INCREMENTO(t):
+    r'\+\+'
+    return t
+
+def t_DECREMENTO(t):
+    r'--'
+    return t
+
+def t_ASIGNACION(t):
+    r'='
+    return t
+
+# Operadores.
+
+def t_OP_TERNARIO(t):
+    r'\?'
+    return t
+
+def t_COLON(t):
+    r':'
+    return t
+
+# Lógicos
+
+def t_MENOR(t):
+    r'<'
+    return t
+
+def t_MENOR_IGUAL(t):
+    r'<='
+    return t
+
+def t_MAYOR(t):
+    r'>'
+    return t
+
+def t_MAYOR_IGUAL(t):
+    r'>='
+    return t
+
+def t_IGUAL(t):
+    r'=='
+    return t
+
+def t_DISTINTO(t):
+    r'!='
+    return t
+
+def t_PUNTOS_MAYOR_PUNTOS(t):
+    r':>:'
+    return t
+
+def t_PUNTOS_MENOR_PUNTOS(t):
+    r':>:'
+    return t
 
 def t_TIPO_ENTERO(t):
     r'int'
@@ -109,7 +280,7 @@ def t_BUCLE_WHILE(t):
 
 def t_COMENTARIOS(t):
     r'\/\/[^\n]*'
-    return t
+    return t #Debería ser pass para que no los tome en cuenta.
 
 def t_OPERADOR_DIVIDIR(t):
     r'/'
@@ -159,12 +330,20 @@ def t_NUMERO_DECIMAL_CON_ERROR2(t):#atrapa decimales sin numero a la derecha del
 # Regla para el token numero entero
 def t_NUMERO_ENTERO(t):
     r'\d+'
-    t.value = int(t.value)  # Convierte el valor del token a un entero
+    try:
+        t.value=int(t.value)
+        if t.value>=-2147483648 and t.value<=2147483647:
+            t.value=int(t.value)
+        else:
+            print(f'Integer value out of bound {t.value}')
+            t.type='ENTERO_SOBREPASADO'
+    except ValueError:
+        print(f'Error matching value {t.value}')
     return t
 
 #regla para leer las lineas
 def t_LINEAS(t):
-    r'\n+'
+    r'\n'
     t.lexer.lineno += len(t.value)
     return t
 
@@ -194,11 +373,14 @@ contado_de_lineas = 1
 # Obtener tokens
 while True:
     token = lexer.token()
+    f = open('res.txt','a') #Abro el archivo desde aquí
     if not token:
         break  # No hay más tokens
     #IMPRESION DE TOKENS
     if token.type == "LINEAS":
         contado_de_lineas += 1#cada vez que lee una linea sumamos la variable contador_de_lineas
+    else:
+        f.write(f'Línea {contado_de_lineas}. Encontré el token {token.type}: {token.value}\n') # Si no es un salto de línea lo agrego a mi archivo
 
     if token.type == "TIPO_ENTERO":
         print(f"{contado_de_lineas} encontre el token INT: ", token.value)
@@ -317,5 +499,5 @@ while True:
             lista_de_tokens.append(f"{contado_de_lineas} encontre el token CADENA: {token.value}")
 
 escribir_archivo(lista_de_tokens)
-    
+f.close()    
 #nota las lineas en blanco de los archivos no los cuenta
