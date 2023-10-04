@@ -373,131 +373,15 @@ contado_de_lineas = 1
 # Obtener tokens
 while True:
     token = lexer.token()
-    f = open('res.txt','a') #Abro el archivo desde aquí
     if not token:
         break  # No hay más tokens
     #IMPRESION DE TOKENS
     if token.type == "LINEAS":
         contado_de_lineas += 1#cada vez que lee una linea sumamos la variable contador_de_lineas
     else:
-        f.write(f'Línea {contado_de_lineas}. Encontré el token {token.type}: {token.value}\n') # Si no es un salto de línea lo agrego a mi archivo
-
-    if token.type == "TIPO_ENTERO":
-        print(f"{contado_de_lineas} encontre el token INT: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token INT: {token.value}")
-
-    if token.type == "TIPO_DECIMAL":
-        print(f"{contado_de_lineas} encontre el token FLOAT: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token FLOAT: {token.value}")
-
-    if token.type == "TIPO_CARACTER":
-        print(f"{contado_de_lineas} encontre el token CHAR: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token CHAR: {token.value}")
-
-    if token.type == "NUMERO_ENTERO":
-        print(f"{contado_de_lineas} encontre el token NUMERO ENTERO: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token NUMERO ENTERO: {token.value}")
-        
-    if token.type == "NUMERO_DECIMAL":
-        print(f"{contado_de_lineas} encontre el token NUMERO DECIMAL: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token NUMERO DECIMAL: {token.value} ")
-
-    if token.type == "VARIABLE":
-        print(f"{contado_de_lineas} encontre el token VARIABLE: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token VARIABLE: {token.value} ")
-
-    if token.type == "BUCLE_FOR":
-        print(f"{contado_de_lineas} encontre el token FOR: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token FOR: {token.value} ")
-
-    if token.type == "BUCLE_WHILE":
-        print(f"{contado_de_lineas} encontre el token WHILE: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token WHILE: {token.value} ")
-
-    if token.type == "PARENTESIS_IZQUIERDO":
-        print(f"{contado_de_lineas} encontre el token PARENTESIS IZQUIERDO: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token PARENTESIS IZQUIERDO: {token.value} ")
-
-    if token.type == "PARENTESIS_DERECHO":
-        print(f"{contado_de_lineas} encontre el token PARENTESIS DERECHO: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token PARENTESIS DERECHO: {token.value} ")
-
-    if token.type == "PALABRA_RESERVADA_RETURN":
-        print(f"{contado_de_lineas} encontre el token RETURN: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token RETURN: {token.value} ")
-
-    if token.type == "PALABRA_RESERVADA_BREAK":
-        print(f"{contado_de_lineas} encontre el token BREAK: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token BREAK: {token.value} ")
-
-    if token.type == "OPERADOR_SUMA":
-        print(f"{contado_de_lineas} encontre el token SUMA: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token SUMA: {token.value} ")
-
-    if token.type == "OPERADOR_RESTA":
-        print(f"{contado_de_lineas} encontre el token RESTA: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token RESTA: {token.value} ")
-
-    if token.type == "OPERADOR_MULTIPLICAR":
-        print(f"{contado_de_lineas} encontre el token MULTIPLICAR: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token MULTIPLICAR: {token.value} ")
-
-    if token.type == "OPERADOR_DIVIDIR":
-        print(f"{contado_de_lineas} encontre el token DIVIDIR: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token DIVIDIR: {token.value} ")
-
-    if token.type == "OPERADOR_MODULO":
-        print(f"{contado_de_lineas} encontre el token MODULO: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token MODULO: {token.value} ")
-
-    if token.type == "NUMERO_DECIMAL_CON_ERROR":
-        print(f"{contado_de_lineas} encontre el token NUMERO DECIMAL CON ERROR (NULL.DIGITO): ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token NUMERO DECIMAL CON ERROR (NULL.DIGITO): {token.value} ")
-
-    if token.type == "NUMERO_DECIMAL_CON_ERROR2":
-        print(f"{contado_de_lineas} encontre el token NUMERO DECIMAL CON ERROR (DIGITO.NULL): ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token NUMERO DECIMAL CON ERROR (DIGITO.NULL): {token.value} ")
-
-    if token.type == "PUNTO_Y_COMA":
-        print(f"{contado_de_lineas} encontre el token PUNTO Y COMA: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token PUNTO Y COMA: {token.value} ")
-
-    if token.type == "COMENTARIOS":
-        print(f"{contado_de_lineas} encontre el token COMENTARIOS: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token COMENTARIOS: {token.value} ")
-
-    if token.type == "PALABRA_RESERVADA_MAIN":
-        print(f"{contado_de_lineas} encontre el token MAIN: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token MAIN: {token.value} ")
-
-    if token.type == "VARIABLE_ERROR":
-        print(f"{contado_de_lineas} encontre el token VARIABLE MAL ESCRITA: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token VARIABLE MAL ESCRITA: {token.value} ")
-
-    if token.type == "CORCHETE_IZQUIERDO":
-        print(f"{contado_de_lineas} encontre el token CORCHETE IZQUIERDO: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token CORCHETE IZQUIERDO: {token.value} ")
-
-    if token.type == "CORCHETE_DERECHO":
-        print(f"{contado_de_lineas} encontre el token CORCHETE DERECHO: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token CORCHETE DERECHO: {token.value} ")
-
-    if token.type == "COMA":
-        print(f"{contado_de_lineas} encontre el token COMA: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token COMA: {token.value} ")
-    
-    if token.type == "CARACTER":
-            print(f"{contado_de_lineas} encontre el token CARACTER: {token.value}")
-            lista_de_tokens.append(f"{contado_de_lineas} encontre el token CARACTER: {token.value}")
-
-    if token.type == "CARACTER_ERROR":
-            print(f"{contado_de_lineas} encontre el token CARACTER_ERROR: {token.value}")
-            lista_de_tokens.append(f"{contado_de_lineas} encontre el token CARACTER_ERROR: {token.value}")
-
-    if token.type == "CADENA":
-            print(f"{contado_de_lineas} encontre el token CADENA: {token.value}")
-            lista_de_tokens.append(f"{contado_de_lineas} encontre el token CADENA: {token.value}")
+        print(f"{contado_de_lineas} encontre el token {token.type}: ", token.value)
+        lista_de_tokens.append(f"{contado_de_lineas} encontre el token {token.type}: {token.value}")   
 
 escribir_archivo(lista_de_tokens)
-f.close()    
+    
 #nota las lineas en blanco de los archivos no los cuenta
