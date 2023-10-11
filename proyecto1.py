@@ -197,6 +197,10 @@ def t_DECREMENTO(t):
     r'--'
     return t
 
+def t_IGUAL(t):
+    r'=='
+    return t
+
 def t_ASIGNACION(t):
     r'='
     return t
@@ -229,9 +233,6 @@ def t_MAYOR_IGUAL(t):
     r'>='
     return t
 
-def t_IGUAL(t):
-    r'=='
-    return t
 
 def t_DISTINTO(t):
     r'!='
