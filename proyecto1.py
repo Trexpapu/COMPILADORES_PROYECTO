@@ -4,8 +4,9 @@ def leer_archivo(texto):
         with open(texto, 'r') as entrada:
             contenido = entrada.read()
             return contenido
-    except IOError:
-        return print("Archivo no encontrado")
+    except FileNotFoundError:
+        print("Archivo no encontrado")
+        return False
 
 def escribir_archivo(lista):
     with open("salida.txt", 'w') as archivo:
@@ -364,25 +365,28 @@ lexer = lex.lex()
 texto = input("Ingrese la ruta del archivo: ")
 #llamar a la funcion leer archivo y su retorno asignarlo a la variable
 contenido = leer_archivo(texto)
+if contenido == False:
+    pass
+else:
 
-# Asignar la cadena de texto al lexer
-lexer.input(contenido)
-#variable para contar las lineas
-global contado_de_lineas
-contado_de_lineas = 1
+    # Asignar la cadena de texto al lexer
+    lexer.input(contenido)
+    #variable para contar las lineas
+    global contado_de_lineas
+    contado_de_lineas = 1
 
-# Obtener tokens
-while True:
-    token = lexer.token()
-    if not token:
-        break  # No hay más tokens
-    #IMPRESION DE TOKENS
-    if token.type == "LINEAS":
-        contado_de_lineas += 1#cada vez que lee una linea sumamos la variable contador_de_lineas
-    else:
-        print(f"{contado_de_lineas} encontre el token {token.type}: ", token.value)
-        lista_de_tokens.append(f"{contado_de_lineas} encontre el token {token.type}: {token.value}")   
+    # Obtener tokens
+    while True:
+        token = lexer.token()
+        if not token:
+            break  # No hay más tokens
+        #IMPRESION DE TOKENS
+        if token.type == "LINEAS":
+            contado_de_lineas += 1#cada vez que lee una linea sumamos la variable contador_de_lineas
+        else:
+            print(f"{contado_de_lineas} encontre el token {token.type}: ", token.value)
+            lista_de_tokens.append(f"{contado_de_lineas} encontre el token {token.type}: {token.value}")   
 
-escribir_archivo(lista_de_tokens)
-    
-#nota las lineas en blanco de los archivos no los cuenta
+    escribir_archivo(lista_de_tokens)
+        
+    #nota las lineas en blanco de los archivos no los cuenta
