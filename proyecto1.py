@@ -401,6 +401,7 @@ def p_eps(p):
 def p_program(p):
     '''program : declList'''
 
+
 def p_declList(p):
     '''declList : declList decl
                 | decl'''
@@ -412,19 +413,20 @@ def p_decl(p):
 # Segunda parte 4-9
 
 def p_varDecl(p):
-    '''varDectl : typeSpec varDeclList'''
+    '''varDecl : typeSpec varDeclList'''
+
 
 def p_scopedVarDecl(p):
-    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDectLis SEMICOLON
-                     | stpeSpec varDeclList SEMICOLON'''
+    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDectList SEMICOLON
+                     | typeSpec varDeclList SEMICOLON'''
 
 def p_varDeclList(p):
     ''' varDeclList : varDeclList COMA varDeclInit
                     | varDeclInit'''
 
 def p_varDeclInit(p):
-    '''varDeclInit : varDecId 
-                   | varDecId COLON simpleExp'''
+    '''varDeclInit : varDeclId 
+                   | varDeclId COLON simpleExp'''
 
 def p_varDeclId(p):
     '''varDeclId : ID
@@ -611,8 +613,16 @@ def p_constant(p):
                 | PALABRA_RESERVADA_FALSE'''
 
 
+def t_ignore_emptyline(t):
+    r'\s*\n\s*'
+    t.lexer.lineno += 1
+
+
 def p_error(t):
-    print("Error sintactico en '%s'" % t.value)
+    if t:
+        print("Error sintactico en '%s'" % t.value)
+    else:
+         print("Error sintactico: Token inesperado al final del archivo")
 
 parser= yacc.yacc() # Build the parser
 
