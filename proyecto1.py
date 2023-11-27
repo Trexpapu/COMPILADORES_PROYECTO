@@ -1,4 +1,5 @@
 import ply.lex as lex
+import ply.yacc as yacc
 def leer_archivo(texto):
     try:
         with open(texto, 'r') as entrada:
@@ -296,7 +297,7 @@ def t_CADENA(t):
     r'\"[a-zA-Z0-9_][a-zA-Z0-9_]*\"'
     return t
 
-def t_CARACTER(t): #econtrar caracter valido como 'a'
+def t_CARACTER(t): #econtrar caracter valido como 'a' 
     r'\'[a-zA-Z]\''
     return t
 
@@ -538,8 +539,8 @@ def p_relop(p):
     | IGUAL
     | DISTINTO'''
 
-def p_minmaxExp(p):
-    '''minmaxExp minmaxop sumExp
+def p_minmaxExp(p): #creo que habia un error faltaba : pero ya lo corregí
+    '''minmaxExp: minmaxExp minmaxop sumExp 
     | sumExp'''
 
 def p_minmaxop(p):
@@ -555,3 +556,67 @@ def p_sumop(p):
     | OPERADOR_RESTA'''
 
 # Aquí te toca Many, dejé hasta el punto 35 y te toca el 36 :D
+
+#punto 36 en adelante :D
+
+def p_mulExp(p):
+    '''mulExp: mulExp mulop unaryExp
+    | unaryExp''' 
+
+def p_mulop(p):
+    '''mulOp: OPERADOR_MULTIPLICAR
+    | OPERADOR_DIVIDIR
+    | OPERADOR_MODULO'''
+
+def p_unaryExp(p):
+    '''unaryExp: unaryop unaryExp
+    | factor'''
+
+def p_unaryop(p):
+    '''unaryOp: OPERADOR_RESTA
+    | OPERADOR_MULTIPLICAR
+    | OP_TERNARIO'''
+
+def p_factor(p):
+    '''factor: immutable
+    | mutable'''
+
+def p_mutable(p):
+    '''mutable: VARIABLE
+    | VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO'''
+
+def p_immutable(p):
+    '''immutable: PARENTESIS_IZQUIERDO exp PARENTESIS_DERECHO
+    | call
+    | constant'''
+
+def p_call(p):
+    '''call: VARIABLE PARENTESIS_IZQUIERDO args PARENTESIS_DERECHO'''
+
+def p_args(p):
+    '''args: argList
+    | eps'''
+
+def p_argList(p):
+    '''argList: argList COMA exp
+    | exp'''
+
+def p_constant(p):
+    '''constant: NUMERO_ENTERO
+    | NUMERO_DECIMAL
+    | CARACTER
+    | CADENA
+    | PALABRA_RESERVADA_TRUE
+    | PALABRA_RESERVADA_FALSE'''
+
+
+parser= yacc.yacc() # Build the parser
+
+if contenido == False:
+    pass
+else:
+    with open("entrada.txt", 'r') as archivo:
+        contenido = archivo.read()
+        datosIn = contenido
+        print(datosIn) #Imprime entrada
+        parser.parse(datosIn)
