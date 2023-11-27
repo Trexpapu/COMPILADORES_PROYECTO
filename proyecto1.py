@@ -71,7 +71,7 @@ tokens = (
     "OPERADOR_MODULO",
     "NUMERO_DECIMAL_CON_ERROR",
     "NUMERO_DECIMAL_CON_ERROR2",
-    "PUNTO_Y_COMA",
+    'SEMICOLON',
     "COMENTARIOS",
     "PALABRA_RESERVADA_MAIN",
     "VARIABLE_ERROR",
@@ -99,7 +99,7 @@ t_OPERADOR_MULTIPLICAR = r'\*'
 
 t_OPERADOR_MODULO = r'\%'
 
-t_PUNTO_Y_COMA = r';'
+t_SEMICOLON = r'\;'
 
 t_CORCHETE_IZQUIERDO = r'\['
 
@@ -390,3 +390,168 @@ else:
     escribir_archivo(lista_de_tokens)
         
     #nota las lineas en blanco de los archivos no los cuenta
+
+# Inicio analizador sintáctico 1-3
+
+def p_eps(p):
+    'eps :'
+    pass
+
+def p_program(p):
+    'program : declList'
+
+def p_declList(p):
+    '''declList : declList decl
+    | decl'''
+
+def p_decl(p):
+    '''decl : varDecl
+    | funDecl'''
+
+# Segunda parte 4-9
+
+def p_varDecl(p):
+    'varDectl : typeSpec varDeclList'
+
+def p_scopedVarDecl(p):
+    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDectLis SEMICOLONt
+    | stpeSpec varDeclList SEMICOLON'''
+
+def p_varDeclList(p):
+    ''' varDeclList : varDeclList COMA varDeclInit
+    | varDeclInit'''
+
+def p_varDeclInit(p):
+    'varDeclInit : varDecId | varDecId COLON simpleExp'
+
+def p_varDeclId(p):
+    '''varDeclId : ID
+    | ID CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
+
+def p_typeSpec(p):
+    '''typeSpec : TIPO_ENTERO
+    | TIPO_CARACTER
+    | PALABRA_RESERVADA_BOOL'''
+
+# Tercera parte 10-15
+
+def p_funDecl(p):
+    '''funDecl : typeSpec VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt
+    | VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt'''
+    
+def p_parms(p):
+    '''parms : parmList
+    | eps'''
+
+def p_parmList(p):
+    '''parmList : parmList SEMICOLON parmTypeList
+    | parmTypeList'''
+
+def p_parmTypeList(p):
+    '''parmTypeList : typeSpec parmIdList'''
+
+def p_parmIdList(p):
+    '''parmIdList : parmIdList COMA parmId
+    | parmId'''
+
+def p_parmId(p):
+    '''parmId : VARIABLE
+    | VARIABLE PARENTESIS_IZQUIERDO PARENTESIS_DERECHO'''
+
+# Cuarta parte 16-25
+
+def p_stmt(p):
+    '''stmt : expStmt
+    | compoundStmt
+    | selectStmt
+    | iterStmt
+    | returnStmt
+    | breakStmt'''
+
+def p_expStmt(p):
+    '''expStmt : exp SEMICOLON
+    | SEMICOLON'''
+
+def p_compoundStmt(p):
+    '''compoundStmt : LLAVE_IZQ localDecls stmtList LLAVE_DER'''
+
+def p_localDecls(p):
+    '''localDecls : localDecls scopedVarDecl
+    | eps'''
+
+def p_stmtList(p):
+    '''stmtList : stmtList stmt
+    | eps'''
+
+def p_selectStmt(p):
+    '''selectStmt : PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt
+    | PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt'''
+
+def p_iterStmt(p):
+    '''iterStmt : BUCLE_WHILE simpleExp PALABRA_RESERVADA_DO
+    | BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt'''
+
+def p_iterRange(p):
+    '''iterRange : simpleExp PALABRA_RESERVADA_TO simpleExp
+    | simpleExp PALABRA_RESERVADA_TO simpleExp PALABRA_RESERVADA_BY simpleExp'''
+
+def p_returnStmt(p):
+    '''returnStmt : PALABRA_RESERVADA_RETURN SEMICOLON
+    | PALABRA_RESERVADA_RETURN exp SEMICOLON'''
+
+def p_breakStmt(p):
+    '''breakStmt : PALABRA_RESERVADA_BREAK SEMICOLON'''
+
+# Quinta parte 26-46
+
+def p_exp(p):
+    '''exp : mutable ASIGNACION exp
+    | mutable SUMA_RESULTADO exp
+    | mutable RESTA_RESULTADO exp
+    | mutable MULTI_RESULTADO exp
+    | mutable DIVI_RESULTADO exp
+    | mutable INCREMENTO
+    | mutable DECREMENTO
+    | simpleExp'''
+
+def p_simpleExp(p):
+    '''simpleExp : simpleExp PALABRA_RESERVADA_OR andExp
+    | andExp'''
+
+def p_andExp(p):
+    '''andExp : andExp PALABRA_RESERVADA_AND unaryRelExp
+    | unaryRelExp'''
+
+def p_unaryRelExp(p):
+    '''unaryRelExp : PALABRA_RESERVADA_NOT unaryRelExp
+    | relExp'''
+
+def p_relExp(p):
+    '''relExp : minmaxExp relop minmaxExp
+    | minmaxExp'''
+
+def p_relop(p):
+    '''relop : MENOR_IGUAL
+    | MENOR
+    | MAYOR
+    | MAYOR_IGUAL
+    | IGUAL
+    | DISTINTO'''
+
+def p_minmaxExp(p):
+    '''minmaxExp minmaxop sumExp
+    | sumExp'''
+
+def p_minmaxop(p):
+    '''minmaxop PUNTOS_MAYOR_PUNTOS
+    | PUNTOS_MENOR_PUNTOS'''
+
+def p_sumExp(p):
+    '''sumExp : sumExp sumop mulExp
+    | mulExp'''
+
+def p_sumop(p):
+    '''sumop : OPERADOR_SUMA
+    | OPERADOR_RESTA'''
+
+# Aquí te toca Many, dejé hasta el punto 35 y te toca el 36 :D
