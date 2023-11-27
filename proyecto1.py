@@ -395,110 +395,111 @@ else:
 # Inicio analizador sintáctico 1-3
 
 def p_eps(p):
-    'eps :'
+    '''eps :'''
     pass
 
 def p_program(p):
-    'program : declList'
+    '''program : declList'''
 
 def p_declList(p):
     '''declList : declList decl
-    | decl'''
+                | decl'''
 
 def p_decl(p):
     '''decl : varDecl
-    | funDecl'''
+            | funDecl'''
 
 # Segunda parte 4-9
 
 def p_varDecl(p):
-    'varDectl : typeSpec varDeclList'
+    '''varDectl : typeSpec varDeclList'''
 
 def p_scopedVarDecl(p):
-    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDectLis SEMICOLONt
-    | stpeSpec varDeclList SEMICOLON'''
+    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDectLis SEMICOLON
+                     | stpeSpec varDeclList SEMICOLON'''
 
 def p_varDeclList(p):
     ''' varDeclList : varDeclList COMA varDeclInit
-    | varDeclInit'''
+                    | varDeclInit'''
 
 def p_varDeclInit(p):
-    'varDeclInit : varDecId | varDecId COLON simpleExp'
+    '''varDeclInit : varDecId 
+                   | varDecId COLON simpleExp'''
 
 def p_varDeclId(p):
     '''varDeclId : ID
-    | ID CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
+                 | ID CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
 
 def p_typeSpec(p):
     '''typeSpec : TIPO_ENTERO
-    | TIPO_CARACTER
-    | PALABRA_RESERVADA_BOOL'''
+                | TIPO_CARACTER
+                | PALABRA_RESERVADA_BOOL'''
 
 # Tercera parte 10-15
 
 def p_funDecl(p):
     '''funDecl : typeSpec VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt
-    | VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt'''
+               | VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt'''
     
 def p_parms(p):
     '''parms : parmList
-    | eps'''
+             | eps'''
 
 def p_parmList(p):
     '''parmList : parmList SEMICOLON parmTypeList
-    | parmTypeList'''
+                | parmTypeList'''
 
 def p_parmTypeList(p):
     '''parmTypeList : typeSpec parmIdList'''
 
 def p_parmIdList(p):
     '''parmIdList : parmIdList COMA parmId
-    | parmId'''
+                  | parmId'''
 
 def p_parmId(p):
     '''parmId : VARIABLE
-    | VARIABLE PARENTESIS_IZQUIERDO PARENTESIS_DERECHO'''
+              | VARIABLE PARENTESIS_IZQUIERDO PARENTESIS_DERECHO'''
 
 # Cuarta parte 16-25
 
 def p_stmt(p):
     '''stmt : expStmt
-    | compoundStmt
-    | selectStmt
-    | iterStmt
-    | returnStmt
-    | breakStmt'''
+            | compoundStmt
+            | selectStmt
+            | iterStmt
+            | returnStmt
+            | breakStmt'''
 
 def p_expStmt(p):
     '''expStmt : exp SEMICOLON
-    | SEMICOLON'''
+               | SEMICOLON'''
 
 def p_compoundStmt(p):
     '''compoundStmt : LLAVE_IZQ localDecls stmtList LLAVE_DER'''
 
 def p_localDecls(p):
     '''localDecls : localDecls scopedVarDecl
-    | eps'''
+                  | eps'''
 
 def p_stmtList(p):
     '''stmtList : stmtList stmt
-    | eps'''
+                | eps'''
 
 def p_selectStmt(p):
     '''selectStmt : PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt
-    | PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt'''
+                  | PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt'''
 
 def p_iterStmt(p):
     '''iterStmt : BUCLE_WHILE simpleExp PALABRA_RESERVADA_DO
-    | BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt'''
+                | BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt'''
 
 def p_iterRange(p):
     '''iterRange : simpleExp PALABRA_RESERVADA_TO simpleExp
-    | simpleExp PALABRA_RESERVADA_TO simpleExp PALABRA_RESERVADA_BY simpleExp'''
+                 | simpleExp PALABRA_RESERVADA_TO simpleExp PALABRA_RESERVADA_BY simpleExp'''
 
 def p_returnStmt(p):
     '''returnStmt : PALABRA_RESERVADA_RETURN SEMICOLON
-    | PALABRA_RESERVADA_RETURN exp SEMICOLON'''
+                  | PALABRA_RESERVADA_RETURN exp SEMICOLON'''
 
 def p_breakStmt(p):
     '''breakStmt : PALABRA_RESERVADA_BREAK SEMICOLON'''
@@ -507,108 +508,111 @@ def p_breakStmt(p):
 
 def p_exp(p):
     '''exp : mutable ASIGNACION exp
-    | mutable SUMA_RESULTADO exp
-    | mutable RESTA_RESULTADO exp
-    | mutable MULTI_RESULTADO exp
-    | mutable DIVI_RESULTADO exp
-    | mutable INCREMENTO
-    | mutable DECREMENTO
-    | simpleExp'''
+           | mutable SUMA_RESULTADO exp
+           | mutable RESTA_RESULTADO exp
+           | mutable MULTI_RESULTADO exp
+           | mutable DIVI_RESULTADO exp
+           | mutable INCREMENTO
+           | mutable DECREMENTO
+           | simpleExp'''
 
 def p_simpleExp(p):
     '''simpleExp : simpleExp PALABRA_RESERVADA_OR andExp
-    | andExp'''
+                 | andExp'''
 
 def p_andExp(p):
     '''andExp : andExp PALABRA_RESERVADA_AND unaryRelExp
-    | unaryRelExp'''
+              | unaryRelExp'''
 
 def p_unaryRelExp(p):
     '''unaryRelExp : PALABRA_RESERVADA_NOT unaryRelExp
-    | relExp'''
+                   | relExp'''
 
 def p_relExp(p):
     '''relExp : minmaxExp relop minmaxExp
-    | minmaxExp'''
+              | minmaxExp'''
 
 def p_relop(p):
     '''relop : MENOR_IGUAL
-    | MENOR
-    | MAYOR
-    | MAYOR_IGUAL
-    | IGUAL
-    | DISTINTO'''
+            | MENOR
+            | MAYOR
+            | MAYOR_IGUAL
+            | IGUAL
+            | DISTINTO'''
 
 def p_minmaxExp(p): #creo que habia un error faltaba : pero ya lo corregí
-    '''minmaxExp: minmaxExp minmaxop sumExp 
-    | sumExp'''
+    '''minmaxExp : minmaxExp minmaxop sumExp 
+                 | sumExp'''
 
 def p_minmaxop(p):
-    '''minmaxop PUNTOS_MAYOR_PUNTOS
-    | PUNTOS_MENOR_PUNTOS'''
+    '''minmaxop : PUNTOS_MAYOR_PUNTOS
+                | PUNTOS_MENOR_PUNTOS'''
 
 def p_sumExp(p):
     '''sumExp : sumExp sumop mulExp
-    | mulExp'''
+              | mulExp'''
 
 def p_sumop(p):
     '''sumop : OPERADOR_SUMA
-    | OPERADOR_RESTA'''
+             | OPERADOR_RESTA'''
 
 # Aquí te toca Many, dejé hasta el punto 35 y te toca el 36 :D
 
 #punto 36 en adelante :D
 
 def p_mulExp(p):
-    '''mulExp: mulExp mulop unaryExp
-    | unaryExp''' 
+    '''mulExp : mulExp mulop unaryExp
+              | unaryExp''' 
 
 def p_mulop(p):
-    '''mulOp: OPERADOR_MULTIPLICAR
-    | OPERADOR_DIVIDIR
-    | OPERADOR_MODULO'''
+    '''mulOp : OPERADOR_MULTIPLICAR
+             | OPERADOR_DIVIDIR
+             | OPERADOR_MODULO'''
 
 def p_unaryExp(p):
-    '''unaryExp: unaryop unaryExp
-    | factor'''
+    '''unaryExp : unaryop unaryExp
+                | factor'''
 
 def p_unaryop(p):
-    '''unaryOp: OPERADOR_RESTA
-    | OPERADOR_MULTIPLICAR
-    | OP_TERNARIO'''
+    '''unaryOp : OPERADOR_RESTA
+               | OPERADOR_MULTIPLICAR
+               | OP_TERNARIO'''
 
 def p_factor(p):
-    '''factor: immutable
-    | mutable'''
+    '''factor : immutable
+              | mutable'''
 
 def p_mutable(p):
-    '''mutable: VARIABLE
-    | VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO'''
+    '''mutable : VARIABLE
+               | VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO'''
 
 def p_immutable(p):
-    '''immutable: PARENTESIS_IZQUIERDO exp PARENTESIS_DERECHO
-    | call
-    | constant'''
+    '''immutable : PARENTESIS_IZQUIERDO exp PARENTESIS_DERECHO
+                 | call
+                 | constant'''
 
 def p_call(p):
-    '''call: VARIABLE PARENTESIS_IZQUIERDO args PARENTESIS_DERECHO'''
+    '''call : VARIABLE PARENTESIS_IZQUIERDO args PARENTESIS_DERECHO'''
 
 def p_args(p):
-    '''args: argList
-    | eps'''
+    '''args : argList
+            | eps'''
 
 def p_argList(p):
-    '''argList: argList COMA exp
-    | exp'''
+    '''argList : argList COMA exp
+               | exp'''
 
 def p_constant(p):
-    '''constant: NUMERO_ENTERO
-    | NUMERO_DECIMAL
-    | CARACTER
-    | CADENA
-    | PALABRA_RESERVADA_TRUE
-    | PALABRA_RESERVADA_FALSE'''
+    '''constant : NUMERO_ENTERO
+                | NUMERO_DECIMAL
+                | CARACTER
+                | CADENA
+                | PALABRA_RESERVADA_TRUE
+                | PALABRA_RESERVADA_FALSE'''
 
+
+def p_error(t):
+    print("Error sintactico en '%s'" % t.value)
 
 parser= yacc.yacc() # Build the parser
 
@@ -620,3 +624,5 @@ else:
         datosIn = contenido
         print(datosIn) #Imprime entrada
         parser.parse(datosIn)
+
+        varDectl

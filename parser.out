@@ -1,0 +1,255 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CARACTER_ERROR
+    COMENTARIOS
+    COMENTARIO_BLOQUE
+    ENTERO_SOBREPASADO
+    LINEAS
+    NUMERO_DECIMAL_CON_ERROR
+    NUMERO_DECIMAL_CON_ERROR2
+    PALABRA_RESERVADA_MAIN
+    PALABRA_RESERVADA_NULL
+    TIPO_DECIMAL
+    VARIABLE_ERROR
+
+Grammar
+
+Rule 0     S' -> eps
+Rule 1     eps -> <empty>
+Rule 2     program -> declList
+Rule 3     declList -> declList decl
+Rule 4     declList -> decl
+Rule 5     decl -> varDecl
+Rule 6     decl -> funDecl
+Rule 7     varDectl -> typeSpec varDeclList
+Rule 8     scopedVarDecl -> PALABRA_RESERVADA_STATIC typeSpec varDectLis SEMICOLON
+Rule 9     scopedVarDecl -> stpeSpec varDeclList SEMICOLON
+Rule 10    varDeclList -> varDeclList COMA varDeclInit
+Rule 11    varDeclList -> varDeclInit
+Rule 12    varDeclInit -> varDecId
+Rule 13    varDeclInit -> varDecId COLON simpleExp
+Rule 14    varDeclId -> ID
+Rule 15    varDeclId -> ID CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO
+Rule 16    typeSpec -> TIPO_ENTERO
+Rule 17    typeSpec -> TIPO_CARACTER
+Rule 18    typeSpec -> PALABRA_RESERVADA_BOOL
+Rule 19    funDecl -> typeSpec VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt
+Rule 20    funDecl -> VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt
+Rule 21    parms -> parmList
+Rule 22    parms -> eps
+Rule 23    parmList -> parmList SEMICOLON parmTypeList
+Rule 24    parmList -> parmTypeList
+Rule 25    parmTypeList -> typeSpec parmIdList
+Rule 26    parmIdList -> parmIdList COMA parmId
+Rule 27    parmIdList -> parmId
+Rule 28    parmId -> VARIABLE
+Rule 29    parmId -> VARIABLE PARENTESIS_IZQUIERDO PARENTESIS_DERECHO
+Rule 30    stmt -> expStmt
+Rule 31    stmt -> compoundStmt
+Rule 32    stmt -> selectStmt
+Rule 33    stmt -> iterStmt
+Rule 34    stmt -> returnStmt
+Rule 35    stmt -> breakStmt
+Rule 36    expStmt -> exp SEMICOLON
+Rule 37    expStmt -> SEMICOLON
+Rule 38    compoundStmt -> LLAVE_IZQ localDecls stmtList LLAVE_DER
+Rule 39    localDecls -> localDecls scopedVarDecl
+Rule 40    localDecls -> eps
+Rule 41    stmtList -> stmtList stmt
+Rule 42    stmtList -> eps
+Rule 43    selectStmt -> PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt
+Rule 44    selectStmt -> PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt
+Rule 45    iterStmt -> BUCLE_WHILE simpleExp PALABRA_RESERVADA_DO
+Rule 46    iterStmt -> BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt
+Rule 47    iterRange -> simpleExp PALABRA_RESERVADA_TO simpleExp
+Rule 48    iterRange -> simpleExp PALABRA_RESERVADA_TO simpleExp PALABRA_RESERVADA_BY simpleExp
+Rule 49    returnStmt -> PALABRA_RESERVADA_RETURN SEMICOLON
+Rule 50    returnStmt -> PALABRA_RESERVADA_RETURN exp SEMICOLON
+Rule 51    breakStmt -> PALABRA_RESERVADA_BREAK SEMICOLON
+Rule 52    exp -> mutable ASIGNACION exp
+Rule 53    exp -> mutable SUMA_RESULTADO exp
+Rule 54    exp -> mutable RESTA_RESULTADO exp
+Rule 55    exp -> mutable MULTI_RESULTADO exp
+Rule 56    exp -> mutable DIVI_RESULTADO exp
+Rule 57    exp -> mutable INCREMENTO
+Rule 58    exp -> mutable DECREMENTO
+Rule 59    exp -> simpleExp
+Rule 60    simpleExp -> simpleExp PALABRA_RESERVADA_OR andExp
+Rule 61    simpleExp -> andExp
+Rule 62    andExp -> andExp PALABRA_RESERVADA_AND unaryRelExp
+Rule 63    andExp -> unaryRelExp
+Rule 64    unaryRelExp -> PALABRA_RESERVADA_NOT unaryRelExp
+Rule 65    unaryRelExp -> relExp
+Rule 66    relExp -> minmaxExp relop minmaxExp
+Rule 67    relExp -> minmaxExp
+Rule 68    relop -> MENOR_IGUAL
+Rule 69    relop -> MENOR
+Rule 70    relop -> MAYOR
+Rule 71    relop -> MAYOR_IGUAL
+Rule 72    relop -> IGUAL
+Rule 73    relop -> DISTINTO
+Rule 74    minmaxExp -> minmaxExp minmaxop sumExp
+Rule 75    minmaxExp -> sumExp
+Rule 76    minmaxop -> PUNTOS_MAYOR_PUNTOS
+Rule 77    minmaxop -> PUNTOS_MENOR_PUNTOS
+Rule 78    sumExp -> sumExp sumop mulExp
+Rule 79    sumExp -> mulExp
+Rule 80    sumop -> OPERADOR_SUMA
+Rule 81    sumop -> OPERADOR_RESTA
+Rule 82    mulExp -> mulExp mulop unaryExp
+Rule 83    mulExp -> unaryExp
+Rule 84    mulOp -> OPERADOR_MULTIPLICAR
+Rule 85    mulOp -> OPERADOR_DIVIDIR
+Rule 86    mulOp -> OPERADOR_MODULO
+Rule 87    unaryExp -> unaryop unaryExp
+Rule 88    unaryExp -> factor
+Rule 89    unaryOp -> OPERADOR_RESTA
+Rule 90    unaryOp -> OPERADOR_MULTIPLICAR
+Rule 91    unaryOp -> OP_TERNARIO
+Rule 92    factor -> immutable
+Rule 93    factor -> mutable
+Rule 94    mutable -> VARIABLE
+Rule 95    mutable -> VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO
+Rule 96    immutable -> PARENTESIS_IZQUIERDO exp PARENTESIS_DERECHO
+Rule 97    immutable -> call
+Rule 98    immutable -> constant
+Rule 99    call -> VARIABLE PARENTESIS_IZQUIERDO args PARENTESIS_DERECHO
+Rule 100   args -> argList
+Rule 101   args -> eps
+Rule 102   argList -> argList COMA exp
+Rule 103   argList -> exp
+Rule 104   constant -> NUMERO_ENTERO
+Rule 105   constant -> NUMERO_DECIMAL
+Rule 106   constant -> CARACTER
+Rule 107   constant -> CADENA
+Rule 108   constant -> PALABRA_RESERVADA_TRUE
+Rule 109   constant -> PALABRA_RESERVADA_FALSE
+
+Terminals, with rules where they appear
+
+ASIGNACION           : 46 52
+BUCLE_FOR            : 46
+BUCLE_WHILE          : 45
+CADENA               : 107
+CARACTER             : 106
+CARACTER_ERROR       : 
+COLON                : 13
+COMA                 : 10 26 102
+COMENTARIOS          : 
+COMENTARIO_BLOQUE    : 
+CORCHETE_DERECHO     : 15 95
+CORCHETE_IZQUIERDO   : 15 95
+DECREMENTO           : 58
+DISTINTO             : 73
+DIVI_RESULTADO       : 56
+ENTERO_SOBREPASADO   : 
+IGUAL                : 72
+INCREMENTO           : 57
+LINEAS               : 
+LLAVE_DER            : 38
+LLAVE_IZQ            : 38
+MAYOR                : 70
+MAYOR_IGUAL          : 71
+MENOR                : 69
+MENOR_IGUAL          : 68
+MULTI_RESULTADO      : 55
+NUMERO_DECIMAL       : 105
+NUMERO_DECIMAL_CON_ERROR : 
+NUMERO_DECIMAL_CON_ERROR2 : 
+NUMERO_ENTERO        : 15 104
+OPERADOR_DIVIDIR     : 85
+OPERADOR_MODULO      : 86
+OPERADOR_MULTIPLICAR : 84 90
+OPERADOR_RESTA       : 81 89
+OPERADOR_SUMA        : 80
+OP_TERNARIO          : 91
+PALABRA_RESERVADA_AND : 62
+PALABRA_RESERVADA_BOOL : 18
+PALABRA_RESERVADA_BREAK : 51
+PALABRA_RESERVADA_BY : 48
+PALABRA_RESERVADA_DO : 45 46
+PALABRA_RESERVADA_ELSE : 44
+PALABRA_RESERVADA_FALSE : 109
+PALABRA_RESERVADA_IF : 43 44
+PALABRA_RESERVADA_MAIN : 
+PALABRA_RESERVADA_NOT : 64
+PALABRA_RESERVADA_NULL : 
+PALABRA_RESERVADA_OR : 60
+PALABRA_RESERVADA_RETURN : 49 50
+PALABRA_RESERVADA_STATIC : 8
+PALABRA_RESERVADA_THEN : 43 44
+PALABRA_RESERVADA_TO : 47 48
+PALABRA_RESERVADA_TRUE : 108
+PARENTESIS_DERECHO   : 19 20 29 96 99
+PARENTESIS_IZQUIERDO : 19 20 29 96 99
+PUNTOS_MAYOR_PUNTOS  : 76
+PUNTOS_MENOR_PUNTOS  : 77
+RESTA_RESULTADO      : 54
+SEMICOLON            : 8 9 23 36 37 49 50 51
+SUMA_RESULTADO       : 53
+TIPO_CARACTER        : 17
+TIPO_DECIMAL         : 
+TIPO_ENTERO          : 16
+VARIABLE             : 19 20 28 29 46 94 95 99
+VARIABLE_ERROR       : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+ID                   : 14 15
+andExp               : 60 61 62
+argList              : 100 102
+args                 : 99
+breakStmt            : 35
+call                 : 97
+compoundStmt         : 31
+constant             : 98
+decl                 : 3 4
+declList             : 2 3
+eps                  : 22 40 42 101 0
+exp                  : 36 50 52 53 54 55 56 95 96 102 103
+expStmt              : 30
+factor               : 88
+funDecl              : 6
+immutable            : 92
+iterRange            : 46
+iterStmt             : 33
+localDecls           : 38 39
+minmaxExp            : 66 66 67 74
+minmaxop             : 74
+mulExp               : 78 79 82
+mulOp                : 
+mulop                : 82
+mutable              : 52 53 54 55 56 57 58 93
+parmId               : 26 27
+parmIdList           : 25 26
+parmList             : 21 23
+parmTypeList         : 23 24
+parms                : 19 20
+program              : 
+relExp               : 65
+relop                : 66
+returnStmt           : 34
+scopedVarDecl        : 39
+selectStmt           : 32
+simpleExp            : 13 43 44 45 47 47 48 48 48 59 60
+stmt                 : 19 20 41 43 44 44 46
+stmtList             : 38 41
+stpeSpec             : 9
+sumExp               : 74 75 78
+sumop                : 78
+typeSpec             : 7 8 19 25
+unaryExp             : 82 83 87
+unaryOp              : 
+unaryRelExp          : 62 63 64
+unaryop              : 87
+varDecId             : 12 13
+varDecl              : 5
+varDeclId            : 
+varDeclInit          : 10 11
+varDeclList          : 7 9 10
+varDectLis           : 8
+varDectl             : 
+
