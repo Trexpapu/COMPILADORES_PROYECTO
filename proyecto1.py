@@ -625,4 +625,4 @@ else:
         print(datosIn) #Imprime entrada
         parser.parse(datosIn)
 
-        varDectl
+        
