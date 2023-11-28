@@ -621,7 +621,9 @@ def p_error(t):
         print("Error sintactico en '%s'" % t.value)
     else:
          print("Error sintactico: Token inesperado al final del archivo")
-
+print("\n")
+print("Parte sintactica \n")
+print("\n")
 parser= yacc.yacc() # Build the parser
 
 if contenido == False:
