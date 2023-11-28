@@ -393,14 +393,12 @@ else:
     #nota las lineas en blanco de los archivos no los cuenta
 
 # Inicio analizador sintáctico 1-3
+def p_program(p):
+    '''program : declList'''
 
 def p_eps(p):
     '''eps :'''
     pass
-
-def p_program(p):
-    '''program : declList'''
-
 
 def p_declList(p):
     '''declList : declList decl
@@ -417,7 +415,7 @@ def p_varDecl(p):
 
 
 def p_scopedVarDecl(p):
-    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDectList SEMICOLON
+    '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDeclList SEMICOLON
                      | typeSpec varDeclList SEMICOLON'''
 
 def p_varDeclList(p):
@@ -429,8 +427,8 @@ def p_varDeclInit(p):
                    | varDeclId COLON simpleExp'''
 
 def p_varDeclId(p):
-    '''varDeclId : ID
-                 | ID CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
+    '''varDeclId : VARIABLE
+                 | VARIABLE CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
 
 def p_typeSpec(p):
     '''typeSpec : TIPO_ENTERO
@@ -563,7 +561,7 @@ def p_sumop(p):
 #punto 36 en adelante :D
 
 def p_mulExp(p):
-    '''mulExp : mulExp mulop unaryExp
+    '''mulExp : mulExp mulOp unaryExp
               | unaryExp''' 
 
 def p_mulop(p):
@@ -572,7 +570,7 @@ def p_mulop(p):
              | OPERADOR_MODULO'''
 
 def p_unaryExp(p):
-    '''unaryExp : unaryop unaryExp
+    '''unaryExp : unaryOp unaryExp
                 | factor'''
 
 def p_unaryop(p):
@@ -634,5 +632,3 @@ else:
         datosIn = contenido
         print(datosIn) #Imprime entrada
         parser.parse(datosIn)
-
-        
