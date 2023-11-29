@@ -294,8 +294,9 @@ def t_CARACTER_ERROR(t):#encontrar caracteres con error como 'hola'
     return t
 
 def t_CADENA(t):
-    r'\"[a-zA-Z0-9_][a-zA-Z0-9_]*\"'
+    r'\"([^\\\n]|(\\.))*?\"'
     return t
+
 
 def t_CARACTER(t): #econtrar caracter valido como 'a' 
     r'\'[a-zA-Z]\''
@@ -490,7 +491,7 @@ def p_selectStmt(p):
                   | PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt'''
 
 def p_iterStmt(p):
-    '''iterStmt : BUCLE_WHILE simpleExp PALABRA_RESERVADA_DO
+    '''iterStmt : BUCLE_WHILE simpleExp PALABRA_RESERVADA_DO stmt
                 | BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt'''
 
 def p_iterRange(p):
