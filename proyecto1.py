@@ -394,234 +394,218 @@ else:
     #nota las lineas en blanco de los archivos no los cuenta
 
 # Inicio analizador sintáctico 1-3
-def p_program(p):
+def p_program(t):
     '''program : declList'''
 
-def p_eps(p):
-    '''eps :'''
-    pass
-
-def p_declList(p):
+def p_declList(t):
     '''declList : declList decl
-                | decl'''
+    | decl'''
 
-def p_decl(p):
+def p_decl(t):
     '''decl : varDecl
-            | funDecl'''
+    | funDecl'''
 
-# Segunda parte 4-9
+def p_varDecl(t):
+    '''varDecl : typeSpec varDeclList SEMICOLON'''
 
-def p_varDecl(p):
-    '''varDecl : typeSpec varDeclList'''
-
-
-def p_scopedVarDecl(p):
+def p_scopedVarDecl(t):
     '''scopedVarDecl : PALABRA_RESERVADA_STATIC typeSpec varDeclList SEMICOLON
-                     | typeSpec varDeclList SEMICOLON'''
+    | typeSpec varDeclList SEMICOLON'''
 
-def p_varDeclList(p):
-    ''' varDeclList : varDeclList COMA varDeclInit
-                    | varDeclInit'''
+def p_varDeclList(t):
+    '''varDeclList : varDeclList COMA varDeclInit
+    | varDeclInit'''
 
-def p_varDeclInit(p):
+def p_varDeclInit(t):
     '''varDeclInit : varDeclId 
-                   | varDeclId COLON simpleExp'''
+    | varDeclId COLON simpleExp'''
 
-def p_varDeclId(p):
+def p_varDeclId(t):
     '''varDeclId : VARIABLE
-                 | VARIABLE CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
+    | VARIABLE CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
 
-def p_typeSpec(p):
+def p_typeSpec(t):
     '''typeSpec : TIPO_ENTERO
-                | TIPO_CARACTER
-                | PALABRA_RESERVADA_BOOL'''
+    | PALABRA_RESERVADA_BOOL
+    | TIPO_CARACTER'''
 
-# Tercera parte 10-15
-
-def p_funDecl(p):
+def p_funDecl(t):
     '''funDecl : typeSpec VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt
-               | VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt'''
-    
-def p_parms(p):
+    | VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt'''
+
+def p_parms(t):
     '''parms : parmList
-             | eps'''
+    | eps'''
 
-def p_parmList(p):
+def p_parmList(t):
     '''parmList : parmList SEMICOLON parmTypeList
-                | parmTypeList'''
+    | parmTypeList'''
 
-def p_parmTypeList(p):
+def p_parmTypeList(t):
     '''parmTypeList : typeSpec parmIdList'''
 
-def p_parmIdList(p):
+def p_parmIdList(t):
     '''parmIdList : parmIdList COMA parmId
-                  | parmId'''
+    | parmId'''
 
-def p_parmId(p):
+def p_parmId(t):
     '''parmId : VARIABLE
-              | VARIABLE PARENTESIS_IZQUIERDO PARENTESIS_DERECHO'''
+    | VARIABLE CORCHETE_IZQUIERDO CORCHETE_DERECHO'''
 
-# Cuarta parte 16-25
-
-def p_stmt(p):
+def p_stmt(t):
     '''stmt : expStmt
-            | compoundStmt
-            | selectStmt
-            | iterStmt
-            | returnStmt
-            | breakStmt'''
+    | compoundStmt
+    | selectStmt
+    | iterStmt
+    | returnStmt
+    | breakStmt'''
 
-def p_expStmt(p):
+def p_expStmt(t):
     '''expStmt : exp SEMICOLON
-               | SEMICOLON'''
+    | SEMICOLON'''
 
-def p_compoundStmt(p):
+def p_compoundStmt(t):
     '''compoundStmt : LLAVE_IZQ localDecls stmtList LLAVE_DER'''
 
-def p_localDecls(p):
+def p_localDecls(t):
     '''localDecls : localDecls scopedVarDecl
-                  | eps'''
+    | eps'''
 
-def p_stmtList(p):
+def p_stmtList(t):
     '''stmtList : stmtList stmt
-                | eps'''
+    | eps'''
 
-def p_selectStmt(p):
+def p_selectStmt(t):
     '''selectStmt : PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt
-                  | PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt'''
+    | PALABRA_RESERVADA_IF simpleExp PALABRA_RESERVADA_THEN stmt PALABRA_RESERVADA_ELSE stmt'''
 
-def p_iterStmt(p):
+def p_iterStmt(t):
     '''iterStmt : BUCLE_WHILE simpleExp PALABRA_RESERVADA_DO stmt
-                | BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt'''
+    | BUCLE_FOR VARIABLE ASIGNACION iterRange PALABRA_RESERVADA_DO stmt'''
 
-def p_iterRange(p):
+def p_iterRange(t):
     '''iterRange : simpleExp PALABRA_RESERVADA_TO simpleExp
-                 | simpleExp PALABRA_RESERVADA_TO simpleExp PALABRA_RESERVADA_BY simpleExp'''
+    | simpleExp PALABRA_RESERVADA_TO simpleExp PALABRA_RESERVADA_BY simpleExp'''
 
-def p_returnStmt(p):
+def p_returnStmt(t):
     '''returnStmt : PALABRA_RESERVADA_RETURN SEMICOLON
-                  | PALABRA_RESERVADA_RETURN exp SEMICOLON'''
+    | PALABRA_RESERVADA_RETURN exp SEMICOLON'''
 
-def p_breakStmt(p):
+def p_breakStmt(t):
     '''breakStmt : PALABRA_RESERVADA_BREAK SEMICOLON'''
 
-# Quinta parte 26-46
-
-def p_exp(p):
+def p_exp(t):
     '''exp : mutable ASIGNACION exp
-           | mutable SUMA_RESULTADO exp
-           | mutable RESTA_RESULTADO exp
-           | mutable MULTI_RESULTADO exp
-           | mutable DIVI_RESULTADO exp
-           | mutable INCREMENTO
-           | mutable DECREMENTO
-           | simpleExp'''
+    | mutable SUMA_RESULTADO exp
+    | mutable RESTA_RESULTADO exp
+    | mutable MULTI_RESULTADO exp
+    | mutable DIVI_RESULTADO exp
+    | mutable INCREMENTO
+    | mutable DECREMENTO
+    | simpleExp'''
 
-def p_simpleExp(p):
+def p_simpleExp(t):
     '''simpleExp : simpleExp PALABRA_RESERVADA_OR andExp
-                 | andExp'''
+    | andExp'''
 
-def p_andExp(p):
+def p_andExp(t):
     '''andExp : andExp PALABRA_RESERVADA_AND unaryRelExp
-              | unaryRelExp'''
+    | unaryRelExp'''
 
-def p_unaryRelExp(p):
+def p_unaryRelExp(t):
     '''unaryRelExp : PALABRA_RESERVADA_NOT unaryRelExp
-                   | relExp'''
+    | relExp'''
 
-def p_relExp(p):
+def p_relExp(t):
     '''relExp : minmaxExp relop minmaxExp
-              | minmaxExp'''
+    | minmaxExp'''
 
-def p_relop(p):
+def p_relop(t):
     '''relop : MENOR_IGUAL
-            | MENOR
-            | MAYOR
-            | MAYOR_IGUAL
-            | IGUAL
-            | DISTINTO'''
+    | MENOR
+    | MAYOR
+    | MAYOR_IGUAL
+    | IGUAL
+    | DISTINTO'''
 
-def p_minmaxExp(p): #creo que habia un error faltaba : pero ya lo corregí
-    '''minmaxExp : minmaxExp minmaxop sumExp 
-                 | sumExp'''
+def p_minmaxExp(t):
+    '''minmaxExp : minmaxExp minmaxop sumExp
+    | sumExp'''
 
-def p_minmaxop(p):
+def p_minmaxop(t):
     '''minmaxop : PUNTOS_MAYOR_PUNTOS
-                | PUNTOS_MENOR_PUNTOS'''
+    | PUNTOS_MENOR_PUNTOS'''
 
-def p_sumExp(p):
+def p_sumExp(t):
     '''sumExp : sumExp sumop mulExp
-              | mulExp'''
+    | mulExp'''
 
-def p_sumop(p):
+def p_sumop(t):
     '''sumop : OPERADOR_SUMA
-             | OPERADOR_RESTA'''
+    | OPERADOR_RESTA'''
 
-# Aquí te toca Many, dejé hasta el punto 35 y te toca el 36 :D
+def p_mulExp(t):
+    '''mulExp : mulExp mulop unaryExp
+    | unaryExp'''
 
-#punto 36 en adelante :D
+def p_mulop(t):
+    '''mulop : OPERADOR_MULTIPLICAR
+    | OPERADOR_DIVIDIR
+    | OPERADOR_MODULO'''
 
-def p_mulExp(p):
-    '''mulExp : mulExp mulOp unaryExp
-              | unaryExp''' 
+def p_unaryExp(t):
+    '''unaryExp : unaryop unaryExp
+    | factor'''
 
-def p_mulop(p):
-    '''mulOp : OPERADOR_MULTIPLICAR
-             | OPERADOR_DIVIDIR
-             | OPERADOR_MODULO'''
+def p_unaryop(t):
+    '''unaryop : OPERADOR_RESTA
+    | OPERADOR_MULTIPLICAR
+    | OP_TERNARIO'''
 
-def p_unaryExp(p):
-    '''unaryExp : unaryOp unaryExp
-                | factor'''
-
-def p_unaryop(p):
-    '''unaryOp : OPERADOR_RESTA
-               | OPERADOR_MULTIPLICAR
-               | OP_TERNARIO'''
-
-def p_factor(p):
+def p_factor(t):
     '''factor : immutable
-              | mutable'''
+    | mutable'''
 
-def p_mutable(p):
+def p_mutable(t):
     '''mutable : VARIABLE
-               | VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO'''
+    | VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO'''
 
-def p_immutable(p):
+def p_immutable(t):
     '''immutable : PARENTESIS_IZQUIERDO exp PARENTESIS_DERECHO
-                 | call
-                 | constant'''
+    | call
+    | constant'''
 
-def p_call(p):
+def p_call(t):
     '''call : VARIABLE PARENTESIS_IZQUIERDO args PARENTESIS_DERECHO'''
 
-def p_args(p):
+def p_args(t):
     '''args : argList
-            | eps'''
+    | eps'''
 
-def p_argList(p):
+def p_argList(t):
     '''argList : argList COMA exp
-               | exp'''
+    | exp'''
 
-def p_constant(p):
+def p_constant(t):
     '''constant : NUMERO_ENTERO
-                | NUMERO_DECIMAL
-                | CARACTER
-                | CADENA
-                | PALABRA_RESERVADA_TRUE
-                | PALABRA_RESERVADA_FALSE'''
+    | NUMERO_DECIMAL
+    | CARACTER
+    | CADENA
+    | PALABRA_RESERVADA_TRUE
+    | PALABRA_RESERVADA_FALSE'''
 
 
-def t_ignore_emptyline(t):
-    r'\s*\n\s*'
-    t.lexer.lineno += 1
-
+def p_eps(p):
+    '''eps : '''
+    
 
 def p_error(t):
     if t:
         print("Error sintactico en '%s'" % t.value)
     else:
          print("Error sintactico: Token inesperado al final del archivo")
+
+
 print("\n")
 print("Parte sintactica \n")
 print("\n")
