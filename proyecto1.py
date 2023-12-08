@@ -112,9 +112,11 @@ t_LLAVE_DER = r'\}'
 
 t_COMA = r'\,'
 
+t_OPERADOR_DIVIDIR = r'/'
+
 def t_COMENTARIO_BLOQUE(t):
     r'/\*(.|\n)*?\*/'
-    return t #Aquí debería haber un pass para que simplemente ignore los comentarios de bloque.
+    pass
 
 # Palabras reservadas
 def t_PALABRA_RESERVADA_STATIC(t):
@@ -245,7 +247,7 @@ def t_PUNTOS_MAYOR_PUNTOS(t):
     return t
 
 def t_PUNTOS_MENOR_PUNTOS(t):
-    r':>:'
+    r':<:'
     return t
 
 def t_TIPO_ENTERO(t):
@@ -283,11 +285,8 @@ def t_BUCLE_WHILE(t):
 
 def t_COMENTARIOS(t):
     r'\/\/[^\n]*'
-    return t #Debería ser pass para que no los tome en cuenta.
+    pass
 
-def t_OPERADOR_DIVIDIR(t):
-    r'/'
-    return t
 
 def t_CARACTER_ERROR(t):#encontrar caracteres con error como 'hola'
     r'\'[a-zA-Z0-9][a-zA-Z0-9]+\''
@@ -335,19 +334,19 @@ def t_NUMERO_DECIMAL_CON_ERROR2(t):#atrapa decimales sin numero a la derecha del
 def t_NUMERO_ENTERO(t):
     r'\d+'
     try:
-        t.value=int(t.value)
-        if t.value>=-2147483648 and t.value<=2147483647:
-            t.value=int(t.value)
+        t.value = int(t.value)
+        if t.value >= -2147483648 and t.value <= 2147483647:
+            t.value = int(t.value)
         else:
             print(f'Integer value out of bound {t.value}')
-            t.type='ENTERO_SOBREPASADO'
+            t.type = 'ENTERO_SOBREPASADO'
     except ValueError:
         print(f'Error matching value {t.value}')
     return t
 
 #regla para leer las lineas
 def t_LINEAS(t):
-    r'\n'
+    r'\n+'
     t.lexer.lineno += len(t.value)
     return t
 
@@ -403,7 +402,8 @@ def p_declList(t):
 
 def p_decl(t):
     '''decl : varDecl
-    | funDecl'''
+    | funDecl
+    | LINEAS'''
 
 def p_varDecl(t):
     '''varDecl : typeSpec varDeclList SEMICOLON'''
@@ -597,13 +597,13 @@ def p_constant(t):
 
 def p_eps(p):
     '''eps : '''
-    
 
-def p_error(t):
-    if t:
-        print("Error sintactico en '%s'" % t.value)
-    else:
-         print("Error sintactico: Token inesperado al final del archivo")
+
+
+def p_error(p):
+    if p:
+        print("Error sintactico en '%s'" % p.value)
+   
 
 
 print("\n")
