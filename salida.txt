@@ -1,7 +1,11 @@
-1 encontre el token PALABRA_RESERVADA_BOOL: bool
-1 encontre el token VARIABLE: vida
+1 encontre el token TIPO_ENTERO: int
+1 encontre el token VARIABLE: b
+1 encontre el token ASIGNACION: =
+1 encontre el token NUMERO_ENTERO: 2
 1 encontre el token SEMICOLON: ;
-2 encontre el token VARIABLE: vida
-2 encontre el token ASIGNACION: =
-2 encontre el token PALABRA_RESERVADA_TRUE: true
-2 encontre el token SEMICOLON: ;
+1 encontre el token TIPO_ENTERO: int
+1 encontre el token VARIABLE: b
+1 encontre el token SEMICOLON: ;
+1 encontre el token TIPO_ENTERO: int
+1 encontre el token VARIABLE: b
+1 encontre el token SEMICOLON: ;

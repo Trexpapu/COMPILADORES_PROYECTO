@@ -1,5 +1,8 @@
 import ply.lex as lex
 import ply.yacc as yacc
+
+variables = {}
+
 def leer_archivo(texto):
     try:
         with open(texto, 'r') as entrada:
@@ -348,10 +351,10 @@ def t_NUMERO_ENTERO(t):
 def t_LINEAS(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-    return t
+   
 
 # Ignorar espacios en blanco y tabulaciones
-t_ignore = ' \t'
+t_ignore = '  \n\t'
 
 # Manejo de errores
 def t_error(t):
@@ -398,7 +401,14 @@ def p_program(t):
 
 def p_declList(t):
     '''declList : declList decl
-    | decl'''
+    | decl
+    | typeSpec VARIABLE ASIGNACION exp SEMICOLON'''
+    if t[1] == 'int' or t[1] == 'bool' or t[1] == 'char':
+        if t[2] not in variables:
+            variables[t[2]] = 'int'
+        else:
+            print(f"{t[2]} Error semantico esa variable ya esta previamente declarada")
+    
 
 def p_decl(t):
     '''decl : varDecl
@@ -423,6 +433,10 @@ def p_varDeclInit(t):
 def p_varDeclId(t):
     '''varDeclId : VARIABLE
     | VARIABLE CORCHETE_IZQUIERDO NUMERO_ENTERO CORCHETE_DERECHO'''
+    if t[1] not in variables:
+        variables[t[1]] = 'int'
+    else:
+        print(f"{t[1]} Error semantico esa variable ya esta previamente declarada")
 
 def p_typeSpec(t):
     '''typeSpec : TIPO_ENTERO
@@ -432,6 +446,13 @@ def p_typeSpec(t):
 def p_funDecl(t):
     '''funDecl : typeSpec VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt
     | VARIABLE PARENTESIS_IZQUIERDO parms PARENTESIS_DERECHO stmt'''
+    if t[1] == 'int' or t[1] == 'bool' or t[1] == 'char':
+        pass
+    else:
+        if t[1] not in variables:
+            variables[t[1]] = 'int'
+        else:
+            print(f"{t[1]} Error semantico esa variable ya esta previamente declarada")
 
 def p_parms(t):
     '''parms : parmList
@@ -451,6 +472,12 @@ def p_parmIdList(t):
 def p_parmId(t):
     '''parmId : VARIABLE
     | VARIABLE CORCHETE_IZQUIERDO CORCHETE_DERECHO'''
+    if t[1] not in variables:
+        variables[t[1]] = 'int'
+    else:
+        print(f"{t[1]} Error semantico esa variable ya esta previamente declarada")
+    
+
 
 def p_stmt(t):
     '''stmt : expStmt
@@ -495,7 +522,8 @@ def p_breakStmt(t):
     '''breakStmt : PALABRA_RESERVADA_BREAK SEMICOLON'''
 
 def p_exp(t):
-    '''exp : mutable ASIGNACION exp
+    '''exp : decl
+    | mutable ASIGNACION exp
     | mutable SUMA_RESULTADO exp
     | mutable RESTA_RESULTADO exp
     | mutable MULTI_RESULTADO exp
@@ -503,6 +531,7 @@ def p_exp(t):
     | mutable INCREMENTO
     | mutable DECREMENTO
     | simpleExp'''
+
 
 def p_simpleExp(t):
     '''simpleExp : simpleExp PALABRA_RESERVADA_OR andExp
@@ -569,6 +598,11 @@ def p_factor(t):
 def p_mutable(t):
     '''mutable : VARIABLE
     | VARIABLE CORCHETE_IZQUIERDO exp CORCHETE_DERECHO'''
+    if t[1] not in variables:
+        variables[t[1]] = 'int'
+    else:
+        print(f"{t[1]} Error semantico esa variable ya esta previamente declarada")
+    
 
 def p_immutable(t):
     '''immutable : PARENTESIS_IZQUIERDO exp PARENTESIS_DERECHO
@@ -600,9 +634,14 @@ def p_eps(p):
 
 
 
-def p_error(p):
-    if p:
-        print("Error sintactico en '%s'" % p.value)
+def p_error(t):
+    try:
+        if t is not None and hasattr(t, 'value'):
+            print("Error sintactico en '%s'" %t.value)
+        else:
+            print("Falta completar input")
+    except Exception as e:
+        print("Ocurrió un error:", e)
    
 
 
@@ -619,3 +658,4 @@ else:
         datosIn = contenido
         print(datosIn) #Imprime entrada
         parser.parse(datosIn)
+
